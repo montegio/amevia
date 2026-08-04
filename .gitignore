@@ -1,0 +1,32 @@
+# Sistemas
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
+# Segredos
+.env
+.env.*
+!.env.example
+
+# Backend
+backend/vendor/
+backend/node_modules/
+backend/storage/logs/*
+backend/storage/framework/cache/*
+backend/storage/framework/sessions/*
+backend/storage/framework/views/*
+
+# Flutter
+frontend/.dart_tool/
+frontend/build/
+frontend/.flutter-plugins
+frontend/.flutter-plugins-dependencies
+frontend/android/local.properties
+frontend/ios/Pods/
+
+# Infraestrutura
+infra/data/
+infra/backups/
