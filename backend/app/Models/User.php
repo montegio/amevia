@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Domain\Family\Models\FamilyMember;
 use App\Domain\Family\Models\Family;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -36,5 +37,9 @@ class User extends Authenticatable
     public function ownedFamilies(): HasMany
     {
         return $this->hasMany(Family::class, 'owner_user_id');
+    }
+    public function familyMemberships(): HasMany
+    {
+        return $this->hasMany(FamilyMember::class);
     }
 }

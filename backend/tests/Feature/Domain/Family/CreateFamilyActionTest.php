@@ -107,4 +107,23 @@ public function test_it_does_not_reuse_slug_from_soft_deleted_family(): void
 
     $this->assertSame('familia-monte-2', $secondFamily->slug);
 }
+public function test_owner_is_automatically_added_as_family_member(): void
+{
+    $user = User::factory()->create();
+
+    $family = (new CreateFamilyAction())->execute(
+        new CreateFamilyData(
+            name: 'Família Monte',
+            ownerUserId: $user->id,
+        )
+    );
+
+    $this->assertDatabaseHas('family_members', [
+        'family_id' => $family->id,
+        'user_id' => $user->id,
+        'role' => 'owner',
+        'status' => 'accepted',
+    ]);
+}
+
 }

@@ -3,6 +3,7 @@
 namespace App\Domain\Family\Models;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -35,4 +36,9 @@ class Family extends Model
     {
         return $this->belongsTo(User::class, 'owner_user_id');
     }
+    public function members(): HasMany
+    {
+        return $this->hasMany(FamilyMember::class);
+    }
 }
+
