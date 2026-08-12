@@ -49,4 +49,25 @@ class FamilyMember extends Model
     {
         return $this->belongsTo(User::class, 'invited_by_user_id');
     }
+public function isOwner(): bool
+{
+    return $this->role === \App\Domain\Family\Enums\FamilyRole::OWNER;
+}
+
+public function isAdmin(): bool
+{
+    return $this->role === \App\Domain\Family\Enums\FamilyRole::ADMIN;
+}
+
+public function canManageMembers(): bool
+{
+    return in_array(
+        $this->role,
+        [
+            \App\Domain\Family\Enums\FamilyRole::OWNER,
+            \App\Domain\Family\Enums\FamilyRole::ADMIN,
+        ],
+        true
+    ) && $this->status === \App\Domain\Family\Enums\FamilyMemberStatus::ACCEPTED;
+}
 }

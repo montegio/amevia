@@ -132,4 +132,67 @@ public function test_role_and_status_are_cast_to_enums(): void
         $membership->status
     );
 }
+public function test_owner_can_manage_members(): void
+{
+    $owner = User::factory()->create();
+
+    $family = Family::create([
+        'name' => 'Família Monte',
+        'slug' => 'familia-monte',
+        'owner_user_id' => $owner->id,
+    ]);
+
+    $membership = FamilyMember::create([
+        'family_id' => $family->id,
+        'user_id' => $owner->id,
+        'role' => 'owner',
+        'status' => 'accepted',
+    ]);
+
+    $this->assertTrue($membership->isOwner());
+    $this->assertTrue($membership->canManageMembers());
+}
+
+public function test_admin_can_manage_members(): void
+{
+    $owner = User::factory()->create();
+    $admin = User::factory()->create();
+
+    $family = Family::create([
+        'name' => 'Família Monte',
+        'slug' => 'familia-monte',
+        'owner_user_id' => $owner->id,
+    ]);
+
+    $membership = FamilyMember::create([
+        'family_id' => $family->id,
+        'user_id' => $admin->id,
+        'role' => 'admin',
+        'status' => 'accepted',
+    ]);
+
+    $this->assertTrue($membership->isAdmin());
+    $this->assertTrue($membership->canManageMembers());
+}
+
+public function test_contributor_cannot_manage_members(): void
+{
+    $owner = User::factory()->create();
+    $user = User::factory()->create();
+
+    $family = Family::create([
+        'name' => 'Família Monte',
+        'slug' => 'familia-monte',
+        'owner_user_id' => $owner->id,
+    ]);
+
+    $membership = FamilyMember::create([
+        'family_id' => $family->id,
+        'user_id' => $user->id,
+        'role' => 'contributor',
+        'status' => 'accepted',
+    ]);
+
+    $this->assertFalse($membership->canManageMembers());
+}
 }
